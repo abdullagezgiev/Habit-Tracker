@@ -73,8 +73,24 @@ const AddHabitForm = ({
         style={styles.input}
         placeholder="Время (HH:MM)"
         value={time}
-        onChangeText={setTime}
+        onChangeText={(text) => {
+          // Простая валидация формата
+          if (/^([0-9]|0[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])?$/.test(text) || text === '') {
+            setTime(text);
+          }
+        }}
         keyboardType="numeric"
+        maxLength={5}
+        onBlur={() => {
+          // Добавляем ":" автоматически
+          if (time.length === 2 && !time.includes(':')) {
+            setTime(`${time}:`);
+          }
+          // Добавляем ведущий ноль
+          if (time.length === 1 && time !== '0') {
+            setTime(`0${time}:`);
+          }
+        }}
       />
       <View style={styles.buttonRow}>
         <TouchableOpacity

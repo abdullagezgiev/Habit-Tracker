@@ -199,8 +199,9 @@
 
 import AddHabitForm from '@/components/AddHabitForm';
 import HabitItem from '@/components/HabitItem';
-import { requestNotificationPermission, setupNotifications, scheduleHabitNotification,
-  cancelHabitNotification } from '@/components/HabitNotifications';
+import {
+  requestNotificationPermission, setupNotifications
+} from '@/components/HabitNotifications';
 import WeekCalendar from '@/components/WeekCalendar';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
@@ -286,19 +287,19 @@ const HabitTracker = () => {
   //     Alert.alert('Ошибка', 'Не удалось удалить привычку');
   //   }
   // };
-const deleteHabit = async (id: string) => {
-  const habitToDelete = habits.find(h => h.id === id);
-    if (!habitToDelete) return;
+  const deleteHabit = async (idToDelete: string) => {
+    const habitToDelete = habits.find(h => h.id === idToDelete);
+      if (!habitToDelete) return;
 
-    try {
-      if (habitToDelete.notificationId) {
-        await cancelHabitNotification(habitToDelete.notificationId);
+      try {
+        if (habitToDelete.notificationId) {
+          await cancelHabitNotification(habitToDelete.notificationId);
+        }
+        setHabits(habits.filter(h => h.id !== id));
+      } catch (error) {
+        Alert.alert('Ошибка', 'Не удалось удалить привычку');
       }
-      setHabits(habits.filter(h => h.id !== id));
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось удалить привычку');
-    }
-};
+  };
 
   /* ЗАПОМНИ! Это обычная практика при разработке: когда функция еще не релизована, но 
   ее нужно вызвать или она нужна для структуры кода, ставят такую заглушку. Она напоминает,
